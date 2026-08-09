@@ -1971,116 +1971,50 @@ function enableMotion() {
    DÖNTÉS FELDOLGOZÁSA
 ===================================================== */
 
-function handleOrientation(event) {
-
-    if (
-        document
-            .getElementById("game")
-            .classList
-            .contains("hidden")
-    ) {
-
-        return;
-
-    }
-
-    if (locked) {
+function handleOrientation(event){
+    if(document.getElementById("game").classList.contains("hidden") || locked){
         return;
     }
+
+    const beta = event.beta;
+
+    if(typeof beta !== "number"){
+        return;
+    }
+
+    // Ha még nincs előző értékünk, elmentjük
+    if(lastBeta === null){
+        lastBeta = beta;
+        return;
+    }
+
+    const change = beta - lastBeta;
 
     /*
-       A beta érték azt jelzi,
-       mennyire van előre/hátra
-       döntve az iPhone.
+      TELEFON DÖNTÉSE:
+
+      Erős lefelé döntés -> HELYES
+      Erős felfelé döntés -> PASSZ
+
+      A küszöböt 15 fokra csökkentettük,
+      így könnyebben felismeri a mozdulatot.
     */
 
-    const beta =
-        event.beta;
-
-    if (
-        typeof beta !==
-        "number"
-    ) {
-        return;
-    }
-
-
-    /*
-       Első mérésnél csak
-       elmentjük az értéket.
-    */
-
-    if (
-        lastBeta === null
-    ) {
-
-        lastBeta =
-            beta;
-
-        return;
-
-    }
-
-
-    const difference =
-        beta -
-        lastBeta;
-
-
-    /*
-       Ha jelentősen lefelé
-       döntöd -> HELYES.
-    */
-
-    if (
-        difference > 25
-    ) {
-
+    if(change > 15){
+        lastBeta = beta;
         answer(true);
-
-        lastBeta =
-            beta;
-
         return;
-
     }
 
-
-    /*
-       Ha jelentősen felfelé
-       döntöd -> PASSZ.
-    */
-
-    if (
-        difference < -25
-    ) {
-
+    if(change < -15){
+        lastBeta = beta;
         answer(false);
-
-        lastBeta =
-            beta;
-
         return;
-
     }
 
-
-    /*
-       Folyamatosan frissítjük
-       az alapértéket.
-    */
-
-    if (
-        Math.abs(difference) < 8
-    ) {
-
-        lastBeta =
-            beta;
-
-    }
-
+    // Folyamatosan frissítjük az alaphelyzetet
+    lastBeta = beta;
 }
-
 
 /* =====================================================
    SENSOR ÁLLAPOT
