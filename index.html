@@ -1,0 +1,2140 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width,
+      initial-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      viewport-fit=cover">
+
+<title>Forehead Magyar</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        Arial,
+        sans-serif;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            145deg,
+            #702bd9 0%,
+            #3159df 50%,
+            #1687dc 100%
+        );
+
+    overflow-x: hidden;
+}
+
+.screen {
+
+    min-height: 100vh;
+
+    padding:
+        calc(env(safe-area-inset-top) + 30px)
+        20px
+        calc(env(safe-area-inset-bottom) + 30px);
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+h1 {
+
+    margin: 0 0 10px;
+
+    font-size: 54px;
+
+    font-weight: 900;
+
+    letter-spacing: -3px;
+}
+
+h2 {
+
+    margin:
+        0 0 25px;
+
+    font-size: 32px;
+
+    text-align: center;
+}
+
+.subtitle {
+
+    text-align: center;
+
+    font-size: 18px;
+
+    opacity: .9;
+
+    margin-bottom: 25px;
+}
+
+.card {
+
+    width: 100%;
+
+    max-width: 620px;
+
+    padding: 22px;
+
+    border-radius: 28px;
+
+    background:
+        rgba(255,255,255,.14);
+
+    border:
+        1px solid
+        rgba(255,255,255,.25);
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.18);
+
+    backdrop-filter:
+        blur(20px);
+
+    -webkit-backdrop-filter:
+        blur(20px);
+}
+
+button {
+
+    border: none;
+
+    border-radius: 18px;
+
+    padding: 17px 20px;
+
+    width: 100%;
+
+    font-size: 18px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+
+    transition:
+        transform .1s ease;
+}
+
+button:active {
+    transform: scale(.96);
+}
+
+.primary {
+
+    background: white;
+
+    color: #5424bb;
+}
+
+.grid {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 12px;
+}
+
+.category {
+
+    background: white;
+
+    color: #222;
+
+    min-height: 110px;
+
+    box-shadow:
+        0 8px 25px
+        rgba(0,0,0,.15);
+}
+
+.category .emoji {
+
+    display: block;
+
+    font-size: 32px;
+
+    margin-bottom: 7px;
+}
+
+.category small {
+
+    display: block;
+
+    margin-top: 5px;
+
+    opacity: .5;
+
+    font-size: 12px;
+}
+
+.back {
+
+    position: fixed;
+
+    top:
+        calc(
+            env(safe-area-inset-top)
+            + 15px
+        );
+
+    left: 15px;
+
+    width: auto;
+
+    padding:
+        10px 15px;
+
+    background:
+        rgba(255,255,255,.18);
+
+    color: white;
+
+    font-size: 15px;
+
+    z-index: 20;
+}
+
+.topbar {
+
+    position: fixed;
+
+    top:
+        calc(
+            env(safe-area-inset-top)
+            + 15px
+        );
+
+    left: 20px;
+
+    right: 20px;
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    font-size: 20px;
+
+    font-weight: 900;
+
+    z-index: 20;
+}
+
+.word {
+
+    width: 100%;
+
+    max-width: 700px;
+
+    text-align: center;
+
+    font-size:
+        clamp(
+            34px,
+            10vw,
+            70px
+        );
+
+    font-weight: 900;
+
+    line-height: 1.08;
+
+    word-break: break-word;
+
+    padding: 20px;
+}
+
+.hint {
+
+    margin-top: 20px;
+
+    text-align: center;
+
+    opacity: .8;
+
+    font-size: 15px;
+
+    line-height: 1.7;
+}
+
+.actions {
+
+    width: 100%;
+
+    max-width: 560px;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 12px;
+
+    margin-top: 35px;
+}
+
+.pass {
+
+    background:
+        #ef4444;
+
+    color: white;
+}
+
+.correct {
+
+    background:
+        #22c55e;
+
+    color: white;
+}
+
+.result-score {
+
+    font-size: 95px;
+
+    font-weight: 900;
+}
+
+.info {
+
+    text-align: center;
+
+    font-size: 14px;
+
+    opacity: .7;
+
+    margin-top: 15px;
+
+    line-height: 1.5;
+}
+
+.sensor-status {
+
+    margin-top: 15px;
+
+    padding: 8px 14px;
+
+    border-radius: 30px;
+
+    background:
+        rgba(255,255,255,.12);
+
+    font-size: 13px;
+
+    text-align: center;
+}
+
+</style>
+</head>
+
+<body>
+
+
+<!-- ================================================= -->
+<!-- FŐMENÜ -->
+<!-- ================================================= -->
+
+<section
+    id="home"
+    class="screen">
+
+    <h1>
+        FOREHEAD
+    </h1>
+
+    <div class="subtitle">
+        Magyar szóbemondó játék 🇭🇺
+    </div>
+
+    <div class="card">
+
+        <button
+            class="primary"
+            onclick="openCategories()">
+
+            🎮 JÁTÉK INDÍTÁSA
+
+        </button>
+
+        <div class="info">
+
+            Filmek, sorozatok,
+            focisták, hírességek,
+            ételek, állatok,
+            járművek és még sok más.
+
+            <br><br>
+
+            Több száz véletlenszerű elem.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================================================= -->
+<!-- KATEGÓRIÁK -->
+<!-- ================================================= -->
+
+<section
+    id="categories"
+    class="screen hidden">
+
+    <button
+        class="back"
+        onclick="showScreen('home')">
+
+        ← Vissza
+
+    </button>
+
+    <h2>
+        Válassz kategóriát
+    </h2>
+
+    <div
+        id="categoryList"
+        class="grid card">
+    </div>
+
+</section>
+
+
+<!-- ================================================= -->
+<!-- JÁTÉK -->
+<!-- ================================================= -->
+
+<section
+    id="game"
+    class="screen hidden">
+
+    <div class="topbar">
+
+        <span id="timer">
+            ⏱ 60
+        </span>
+
+        <span id="score">
+            Pont: 0
+        </span>
+
+    </div>
+
+
+    <div>
+
+        <div
+            id="word"
+            class="word">
+        </div>
+
+
+        <div class="hint">
+
+            📱 Döntsd a telefonodat!
+
+            <br>
+
+            ⬇️ lefelé = HELYES
+
+            <br>
+
+            ⬆️ felfelé = PASSZ
+
+        </div>
+
+
+        <div
+            id="sensorStatus"
+            class="sensor-status">
+
+            Mozgásérzékelés:
+            nincs engedélyezve
+
+        </div>
+
+    </div>
+
+
+    <div class="actions">
+
+        <button
+            class="pass"
+            onclick="answer(false)">
+
+            ⬆️ PASSZ
+
+        </button>
+
+
+        <button
+            class="correct"
+            onclick="answer(true)">
+
+            ⬇️ HELYES
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ================================================= -->
+<!-- EREDMÉNY -->
+<!-- ================================================= -->
+
+<section
+    id="result"
+    class="screen hidden">
+
+    <div
+        style="font-size:70px">
+
+        🎉
+
+    </div>
+
+    <h1>
+        VÉGE!
+    </h1>
+
+    <div>
+        Eredményed:
+    </div>
+
+    <div
+        id="finalScore"
+        class="result-score">
+
+        0
+
+    </div>
+
+    <div>
+        pont
+    </div>
+
+
+    <button
+        class="primary"
+        style="margin-top:30px"
+        onclick="openCategories()">
+
+        🎮 ÚJ JÁTÉK
+
+    </button>
+
+
+    <button
+        style="
+            margin-top:12px;
+            background:rgba(255,255,255,.15);
+            color:white;
+        "
+        onclick="showScreen('home')">
+
+        🏠 FŐMENÜ
+
+    </button>
+
+</section>
+
+
+<script>
+
+
+/* =====================================================
+   JÁTÉKADATOK
+===================================================== */
+
+const DATA = {
+
+
+/* =====================================================
+   FILMEK
+   ANGOL / MAGYAR
+===================================================== */
+
+"Filmek": [
+
+"Star Wars: Episode IV - A New Hope / Csillagok háborúja: Egy új remény",
+"Star Wars: Episode V - The Empire Strikes Back / Csillagok háborúja: A Birodalom visszavág",
+"Star Wars: Episode VI - Return of the Jedi / Csillagok háborúja: A Jedi visszatér",
+"Star Wars: Episode I - The Phantom Menace / Star Wars I. rész: Baljós árnyak",
+"Star Wars: Episode II - Attack of the Clones / Star Wars II. rész: A klónok támadása",
+"Star Wars: Episode III - Revenge of the Sith / Star Wars III. rész: A Sith-ek bosszúja",
+"Star Wars: The Force Awakens / Star Wars: Az ébredő Erő",
+"Star Wars: The Last Jedi / Star Wars: Az utolsó Jedik",
+"Star Wars: The Rise of Skywalker / Star Wars: Skywalker kora",
+
+"The Lord of the Rings: The Fellowship of the Ring / A Gyűrűk Ura: A Gyűrű Szövetsége",
+"The Lord of the Rings: The Two Towers / A Gyűrűk Ura: A két torony",
+"The Lord of the Rings: The Return of the King / A Gyűrűk Ura: A király visszatér",
+
+"The Hobbit: An Unexpected Journey / A hobbit: Egy váratlan utazás",
+"The Hobbit: The Desolation of Smaug / A hobbit: Smaug pusztasága",
+"The Hobbit: The Battle of the Five Armies / A hobbit: Az öt sereg csatája",
+
+"Harry Potter and the Philosopher's Stone / Harry Potter és a bölcsek köve",
+"Harry Potter and the Chamber of Secrets / Harry Potter és a titkok kamrája",
+"Harry Potter and the Prisoner of Azkaban / Harry Potter és az azkabani fogoly",
+"Harry Potter and the Goblet of Fire / Harry Potter és a tűz serlege",
+"Harry Potter and the Order of the Phoenix / Harry Potter és a Főnix Rendje",
+"Harry Potter and the Half-Blood Prince / Harry Potter és a Félvér Herceg",
+"Harry Potter and the Deathly Hallows: Part 1 / Harry Potter és a Halál ereklyéi 1. rész",
+"Harry Potter and the Deathly Hallows: Part 2 / Harry Potter és a Halál ereklyéi 2. rész",
+
+"Spider-Man / Pókember",
+"Spider-Man 2 / Pókember 2",
+"Spider-Man 3 / Pókember 3",
+"The Amazing Spider-Man / A csodálatos Pókember",
+"The Amazing Spider-Man 2 / A csodálatos Pókember 2",
+"Spider-Man: Homecoming / Pókember: Hazatérés",
+"Spider-Man: Far From Home / Pókember: Idegenben",
+"Spider-Man: No Way Home / Pókember: Nincs hazaút",
+
+"Iron Man / Vasember",
+"Iron Man 2 / Vasember 2",
+"Iron Man 3 / Vasember 3",
+
+"Thor / Thor",
+"Thor: The Dark World / Thor: Sötét világ",
+"Thor: Ragnarok / Thor: Ragnarök",
+"Thor: Love and Thunder / Thor: Szerelem és mennydörgés",
+
+"The Avengers / Bosszúállók",
+"Avengers: Age of Ultron / Bosszúállók: Ultron kora",
+"Avengers: Infinity War / Bosszúállók: Végtelen háború",
+"Avengers: Endgame / Bosszúállók: Végjáték",
+
+"Black Panther / Fekete Párduc",
+"Black Panther: Wakanda Forever / Fekete Párduc: Vakanda, légy áldott",
+
+"Doctor Strange / Doctor Strange",
+"Doctor Strange in the Multiverse of Madness / Doctor Strange az őrület multiverzumában",
+
+"Captain America: The First Avenger / Amerika Kapitány: Az első bosszúálló",
+"Captain America: The Winter Soldier / Amerika Kapitány: A tél katonája",
+"Captain America: Civil War / Amerika Kapitány: Polgárháború",
+
+"Fast & Furious / Halálos iramban",
+"2 Fast 2 Furious / Halálosabb iramban",
+"The Fast and the Furious: Tokyo Drift / Halálos iramban: Tokiói hajsza",
+"Fast & Furious / Halálos iramban 4",
+"Fast Five / Halálos iramban: Ötödik sebesség",
+"Fast & Furious 6 / Halálos iramban 6",
+"Furious 7 / Halálos iramban 7",
+"The Fate of the Furious / Halálos iramban 8",
+"F9 / Halálos iramban 9",
+"Fast X / Halálos iramban 10",
+
+"Pirates of the Caribbean: The Curse of the Black Pearl / A Karib-tenger kalózai: A Fekete Gyöngy átka",
+"Pirates of the Caribbean: Dead Man's Chest / A Karib-tenger kalózai: Holtak kincse",
+"Pirates of the Caribbean: At World's End / A Karib-tenger kalózai: A világ végén",
+"Pirates of the Caribbean: On Stranger Tides / A Karib-tenger kalózai: Ismeretlen vizeken",
+"Pirates of the Caribbean: Dead Men Tell No Tales / A Karib-tenger kalózai: Salazar bosszúja",
+
+"Jurassic Park / Jurassic Park",
+"The Lost World: Jurassic Park / Az elveszett világ: Jurassic Park",
+"Jurassic Park III / Jurassic Park 3",
+"Jurassic World / Jurassic World",
+"Jurassic World: Fallen Kingdom / Jurassic World: Bukott birodalom",
+"Jurassic World Dominion / Jurassic World: Világuralom",
+
+"Joker / Joker",
+"Batman Begins / Batman: Kezdődik",
+"The Dark Knight / A sötét lovag",
+"The Dark Knight Rises / A sötét lovag: Felemelkedés",
+
+"The Matrix / Mátrix",
+"The Matrix Reloaded / Mátrix: Újratöltve",
+"The Matrix Revolutions / Mátrix: Forradalmak",
+
+"John Wick / John Wick",
+"John Wick: Chapter 2 / John Wick: 2. felvonás",
+"John Wick: Chapter 3 - Parabellum / John Wick: 3. felvonás - Parabellum",
+"John Wick: Chapter 4 / John Wick: 4. felvonás",
+
+"The Hangover / Másnaposok",
+"The Hangover Part II / Másnaposok 2",
+"The Hangover Part III / Másnaposok 3",
+
+"The Mask / A maszk",
+"Home Alone / Reszkessetek, betörők!",
+"Forrest Gump / Forrest Gump",
+"The Shawshank Redemption / A remény rabjai",
+"The Green Mile / A zöld mérföld",
+"Gladiator / Gladiátor",
+"Top Gun / Top Gun",
+"Mission: Impossible / Mission: Impossible",
+"The Terminator / Terminátor",
+"Predator / Ragadozó",
+"Alien / A nyolcadik utas: a Halál",
+"Godzilla / Godzilla",
+"King Kong / King Kong",
+"Barbie / Barbie",
+"Oppenheimer / Oppenheimer",
+"Dune / Dűne",
+"300 / 300"
+
+],
+
+
+/* =====================================================
+   SOROZATOK
+   ANGOL / MAGYAR
+===================================================== */
+
+"Sorozatok": [
+
+"Stranger Things / Stranger Things",
+"The Walking Dead / The Walking Dead",
+"Breaking Bad / Totál szívás",
+"Better Call Saul / Better Call Saul",
+"The Boys / The Boys",
+"Gen V / Gen V",
+"Peaky Blinders / Birmingham bandája",
+"The Witcher / Vaják",
+"The Last of Us / The Last of Us",
+"Game of Thrones / Trónok harca",
+"House of the Dragon / Sárkányok háza",
+"The Vampire Diaries / Vámpírnaplók",
+"The Originals / The Originals - A sötétség kora",
+"Legacies / Legacies - A sötétség öröksége",
+"Teen Wolf / Teen Wolf",
+"Supernatural / Odaát",
+"Lucifer / Lucifer",
+"Wednesday / Wednesday",
+"Riverdale / Riverdale",
+"Dark / Dark",
+"Lost / Lost - Eltűntek",
+"Prison Break / A szökés",
+"Dexter / Dexter",
+"You / Te",
+"Euphoria / Eufória",
+"Black Mirror / Fekete tükör",
+"Narcos / Narcos",
+"Ozark / Ozark",
+"Vikings / Vikingek",
+"Vikings: Valhalla / Vikingek: Valhalla",
+"Spartacus / Spartacus",
+"The 100 / A visszatérők",
+"Manifest / Manifest",
+"Outer Banks / Outer Banks",
+"Bridgerton / Bridgerton",
+"The Crown / A korona",
+"Sherlock / Sherlock",
+"Doctor Who / Doctor Who",
+"Mr. Robot / Mr. Robot",
+"Westworld / Westworld",
+"The Mandalorian / The Mandalorian",
+"Andor / Andor",
+"Loki / Loki",
+"WandaVision / WandaVision",
+"Hawkeye / Sólyomszem",
+"Moon Knight / Holdlovag",
+"Daredevil / Daredevil",
+"The Punisher / A Megtorló",
+"Jessica Jones / Jessica Jones",
+"Luke Cage / Luke Cage",
+"Iron Fist / Iron Fist",
+"Agents of S.H.I.E.L.D. / A S.H.I.E.L.D. ügynökei",
+"Supergirl / Supergirl",
+"Arrow / A zöld íjász",
+"The Flash / Flash - A Villám",
+"Gotham / Gotham",
+"Smallville / Smallville",
+"Titans / Titánok",
+"Doom Patrol / Doom Patrol",
+"The Sandman / Az álmok birodalma",
+"Fargo / Fargo",
+"True Detective / A törvény nevében",
+"The Sopranos / Maffiózók",
+"Boardwalk Empire / Gengszterkorzó",
+"House / Doktor House",
+"Grey's Anatomy / Grace klinika",
+"The Good Doctor / Doktor Murphy",
+"24 / 24",
+"Fringe / A rejtély",
+"Hannibal / Hannibal",
+"Bates Motel / Bates Motel",
+"American Horror Story / Amerikai Horror Story",
+"Black Sails / Fekete vitorlák",
+"The Last Kingdom / Az utolsó királyság",
+"See / See",
+"Foundation / Alapítvány",
+"Silo / Siló",
+"Fallout / Fallout",
+"Squid Game / Nyerd meg az életed",
+"Alice in Borderland / Alice Határországban",
+"The Bear / A mackó",
+"Yellowstone / Yellowstone",
+"Reacher / Reacher",
+"The Umbrella Academy / Az Esernyő Akadémia",
+"Cobra Kai / Cobra Kai",
+"One Piece / One Piece",
+"Halo / Halo",
+"Obi-Wan Kenobi / Obi-Wan Kenobi",
+"Ahsoka / Ahsoka",
+"The Book of Boba Fett / Boba Fett könyve",
+"The Rookie / Az újonc",
+"Shameless / Szégyentelenek",
+"Friends / Jóbarátok",
+"The Office / A hivatal",
+"Modern Family / Modern család",
+"How I Met Your Mother / Így jártam anyátokkal",
+"The Big Bang Theory / Agymenők",
+"Two and a Half Men / Két pasi - meg egy kicsi",
+"Family Guy / Family Guy",
+"South Park / South Park",
+"Rick and Morty / Rick és Morty",
+"The Simpsons / A Simpson család"
+
+],
+
+
+/* =====================================================
+   FOCISTÁK
+===================================================== */
+
+"Focisták": [
+
+"Lionel Messi",
+"Cristiano Ronaldo",
+"Neymar",
+"Kylian Mbappé",
+"Erling Haaland",
+"Jude Bellingham",
+"Vinícius Júnior",
+"Mohamed Salah",
+"Kevin De Bruyne",
+"Harry Kane",
+"Robert Lewandowski",
+"Lamine Yamal",
+"Pedri",
+"Rodri",
+"Gavi",
+"Antoine Griezmann",
+"Ousmane Dembélé",
+"Karim Benzema",
+"Luka Modrić",
+"Toni Kroos",
+"Sergio Ramos",
+"Andrés Iniesta",
+"Xavi",
+"Gerard Piqué",
+"Carles Puyol",
+"Iker Casillas",
+"David Villa",
+"Fernando Torres",
+"Sergio Busquets",
+"Thierry Henry",
+"Zinedine Zidane",
+"Ronaldinho",
+"Ronaldo Nazário",
+"Kaká",
+"Rivaldo",
+"Romário",
+"Pelé",
+"Diego Maradona",
+"Johan Cruyff",
+"Franz Beckenbauer",
+"Thomas Müller",
+"Manuel Neuer",
+"Philipp Lahm",
+"Mesut Özil",
+"Bastian Schweinsteiger",
+"Mats Hummels",
+"Marco Reus",
+"Mario Götze",
+"Timo Werner",
+"Joshua Kimmich",
+"Kai Havertz",
+"Jamal Musiala",
+"Sadio Mané",
+"Didier Drogba",
+"Samuel Eto'o",
+"Yaya Touré",
+"Riyad Mahrez",
+"Achraf Hakimi",
+"Hakim Ziyech",
+"Victor Osimhen",
+"Romelu Lukaku",
+"Eden Hazard",
+"Thibaut Courtois",
+"Vincent Kompany",
+"Virgil van Dijk",
+"Frenkie de Jong",
+"Matthijs de Ligt",
+"Memphis Depay",
+"Arjen Robben",
+"Robin van Persie",
+"Ruud van Nistelrooy",
+"Wesley Sneijder",
+"Edwin van der Sar",
+"Zlatan Ibrahimović",
+"Henrik Larsson",
+"Gareth Bale",
+"Ryan Giggs",
+"Wayne Rooney",
+"David Beckham",
+"Steven Gerrard",
+"Frank Lampard",
+"John Terry",
+"Harry Maguire",
+"Bukayo Saka",
+"Marcus Rashford",
+"Phil Foden",
+"Declan Rice",
+"Cole Palmer",
+"Trent Alexander-Arnold",
+"Jordan Henderson",
+"Jack Grealish",
+"Bernardo Silva",
+"Bruno Fernandes",
+"Diogo Jota",
+"Rúben Dias",
+"João Cancelo",
+"João Félix",
+"Luis Suárez",
+"Edinson Cavani",
+"Alisson Becker",
+"David Raya",
+"Jan Oblak"
+
+],
+
+
+/* =====================================================
+   HÍRESSÉGEK
+===================================================== */
+
+"Hírességek": [
+
+"Dwayne Johnson",
+"Arnold Schwarzenegger",
+"Michael Jackson",
+"Will Smith",
+"Keanu Reeves",
+"Leonardo DiCaprio",
+"Brad Pitt",
+"Tom Cruise",
+"Johnny Depp",
+"Robert Downey Jr.",
+"Chris Hemsworth",
+"Chris Evans",
+"Ryan Reynolds",
+"Ryan Gosling",
+"Jason Statham",
+"Vin Diesel",
+"Jackie Chan",
+"Jim Carrey",
+"Rowan Atkinson",
+"Adam Sandler",
+"Kevin Hart",
+"Tom Hanks",
+"Morgan Freeman",
+"Samuel L. Jackson",
+"Al Pacino",
+"Robert De Niro",
+"Sylvester Stallone",
+"Bruce Willis",
+"Chuck Norris",
+"Jean-Claude Van Damme",
+"Steven Seagal",
+"Meryl Streep",
+"Jennifer Aniston",
+"Angelina Jolie",
+"Scarlett Johansson",
+"Emma Stone",
+"Emma Watson",
+"Margot Robbie",
+"Gal Gadot",
+"Zendaya",
+"Jenna Ortega",
+"Millie Bobby Brown",
+"Miley Cyrus",
+"Taylor Swift",
+"Ariana Grande",
+"Selena Gomez",
+"Lady Gaga",
+"Rihanna",
+"Beyoncé",
+"Justin Bieber",
+"Eminem",
+"Drake",
+"The Weeknd",
+"Bruno Mars",
+"Ed Sheeran",
+"Post Malone",
+"Snoop Dogg",
+"50 Cent",
+"Shakira",
+"Jennifer Lopez",
+"Kim Kardashian",
+"Kylie Jenner",
+"Kendall Jenner",
+"MrBeast",
+"PewDiePie",
+"Logan Paul",
+"Jake Paul",
+"Conor McGregor",
+"Mike Tyson",
+"Muhammad Ali",
+"Lewis Hamilton",
+"Max Verstappen",
+"Usain Bolt",
+"Michael Jordan",
+"LeBron James",
+"Stephen Curry",
+"Kobe Bryant",
+"Shaquille O'Neal",
+"Tiger Woods",
+"Roger Federer",
+"Rafael Nadal",
+"Novak Djokovic",
+"Serena Williams",
+"Simone Biles",
+"Elon Musk",
+"Mark Zuckerberg",
+"Bill Gates",
+"Jeff Bezos",
+"Gordon Ramsay",
+"Jamie Oliver",
+"Tom Holland",
+"Chris Pratt",
+"Hugh Jackman",
+"Hugh Grant",
+"Nicole Kidman",
+"Julia Roberts",
+"George Clooney",
+"Matt Damon",
+"Ben Affleck"
+
+],
+
+
+/* =====================================================
+   ÉTELEK
+===================================================== */
+
+"Ételek": [
+
+"Pizza",
+"Hamburger",
+"Palacsinta",
+"Gulyásleves",
+"Lángos",
+"Spagetti",
+"Fagylalt",
+"Rántott hús",
+"Hot dog",
+"Töltött káposzta",
+"Pörkölt",
+"Paprikás csirke",
+"Halászlé",
+"Rakott krumpli",
+"Főzelék",
+"Túrógombóc",
+"Somlói galuska",
+"Dobostorta",
+"Rétes",
+"Bejgli",
+"Kürtőskalács",
+"Sült krumpli",
+"Steak",
+"Rántotta",
+"Tükörtojás",
+"Omlett",
+"Szendvics",
+"Gyros",
+"Kebab",
+"Sushi",
+"Ramen",
+"Pho",
+"Taco",
+"Burrito",
+"Nachos",
+"Quesadilla",
+"Lasagne",
+"Ravioli",
+"Risotto",
+"Paella",
+"Curry",
+"Margherita pizza",
+"Carbonara",
+"Bolognai spagetti",
+"Gnocchi",
+"Bruschetta",
+"Tiramisu",
+"Panna cotta",
+"Csirkeleves",
+"Húsleves",
+"Paradicsomleves",
+"Gombaleves",
+"Hagymaleves",
+"Sült csirke",
+"Grillkolbász",
+"Virsli",
+"Fasírt",
+"Rakott tészta",
+"Krumplipüré",
+"Rizs",
+"Kuszkusz",
+"Bulgur",
+"Saláta",
+"Cézársaláta",
+"Görög saláta",
+"Uborkasaláta",
+"Gyümölcssaláta",
+"Almás pite",
+"Brownie",
+"Sajttorta",
+"Muffin",
+"Fánk",
+"Gofri",
+"Churros",
+"Macaron",
+"Csokoládé",
+"Gumicukor",
+"Popcorn",
+"Chips",
+"Mogyoró",
+"Pisztácia",
+"Mandula",
+"Eper",
+"Banán",
+"Alma",
+"Narancs",
+"Görögdinnye",
+"Ananász",
+"Mangó",
+"Kivi",
+"Szőlő",
+"Cseresznye",
+"Meggy",
+"Barack",
+"Körte",
+"Málna",
+"Áfonya"
+
+],
+
+
+/* =====================================================
+   ÁLLATOK
+===================================================== */
+
+"Állatok": [
+
+"Kutya",
+"Macska",
+"Elefánt",
+"Oroszlán",
+"Zsiráf",
+"Pingvin",
+"Krokodil",
+"Ló",
+"Tigris",
+"Medve",
+"Majom",
+"Gorilla",
+"Csimpánz",
+"Panda",
+"Koala",
+"Kenguru",
+"Zebra",
+"Rinocérosz",
+"Víziló",
+"Gepárd",
+"Leopárd",
+"Jaguar",
+"Farkas",
+"Róka",
+"Szarvas",
+"Őz",
+"Vaddisznó",
+"Nyúl",
+"Egér",
+"Patkány",
+"Hörcsög",
+"Mókus",
+"Hód",
+"Vidra",
+"Fóka",
+"Delfin",
+"Bálna",
+"Cápa",
+"Polip",
+"Medúza",
+"Rák",
+"Homár",
+"Teknős",
+"Kígyó",
+"Gyík",
+"Kaméleon",
+"Iguána",
+"Béka",
+"Varangy",
+"Pók",
+"Skorpió",
+"Hangya",
+"Méh",
+"Darázs",
+"Pillangó",
+"Szitakötő",
+"Katicabogár",
+"Sáska",
+"Bogár",
+"Csiga",
+"Giliszta",
+"Sas",
+"Sólyom",
+"Bagoly",
+"Papagáj",
+"Galamb",
+"Varjú",
+"Holló",
+"Gólya",
+"Flamingó",
+"Hattyú",
+"Kacsa",
+"Liba",
+"Tyúk",
+"Kakas",
+"Pulyka",
+"Strucc",
+"Emu",
+"Albatrosz",
+"Fecske",
+"Veréb",
+"Sirály",
+"Harkály",
+"Fácán",
+"Páva",
+"Kanári",
+"Aranyhal",
+"Ponty",
+"Lazac",
+"Tonhal",
+"Angolna",
+"Csikóhal",
+"Tengeri csillag",
+"Tengeri sün",
+"Korall",
+"Tarajos sül",
+"Lajhár",
+"Armadillo",
+"Hangyász",
+"Teve",
+"Alpaka"
+
+],
+
+
+/* =====================================================
+   JÁRMŰVEK
+===================================================== */
+
+"Járművek": [
+
+"BMW",
+"Audi",
+"Mercedes",
+"Volkswagen",
+"Ford",
+"Opel",
+"Renault",
+"Peugeot",
+"Citroën",
+"Toyota",
+"Honda",
+"Nissan",
+"Mazda",
+"Subaru",
+"Mitsubishi",
+"Volvo",
+"Saab",
+"Skoda",
+"Seat",
+"Fiat",
+"Alfa Romeo",
+"Lamborghini",
+"Ferrari",
+"Porsche",
+"Bugatti",
+"McLaren",
+"Koenigsegg",
+"Pagani",
+"Bentley",
+"Rolls-Royce",
+"Aston Martin",
+"Tesla",
+"Dacia",
+"Lada",
+"Suzuki",
+"Kia",
+"Hyundai",
+"Lexus",
+"Jaguar",
+"Land Rover",
+"Jeep",
+"Dodge",
+"Chevrolet",
+"Cadillac",
+"Chrysler",
+"Pontiac",
+"Hummer",
+"Mini",
+"Smart",
+"Motorkerékpár",
+"Robogó",
+"Chopper",
+"Cross motor",
+"Quad",
+"ATV",
+"Traktor",
+"Kombájn",
+"Teherautó",
+"Kamion",
+"Furgon",
+"Busz",
+"Trolibusz",
+"Villamos",
+"Metró",
+"Vonat",
+"Gyorsvonat",
+"Mozdony",
+"Gőzmozdony",
+"Repülőgép",
+"Helikopter",
+"Magánrepülőgép",
+"Vitorlázórepülő",
+"Drón",
+"Hőlégballon",
+"Léghajó",
+"Hajó",
+"Motorcsónak",
+"Vitorlás",
+"Jacht",
+"Tengeralattjáró",
+"Komphajó",
+"Kajak",
+"Kenu",
+"Gondola",
+"Kerékpár",
+"Hegyikerékpár",
+"Versenybicikli",
+"BMX",
+"Roller",
+"Elektromos roller",
+"Gördeszka",
+"Segway",
+"Mentőautó",
+"Rendőrautó",
+"Tűzoltóautó",
+"Taxi",
+"Iskolabusz",
+"Versenyautó",
+"Rallyautó",
+"Forma-1 autó"
+
+],
+
+
+/* =====================================================
+   VEGYES
+===================================================== */
+
+"Vegyes": [
+
+"Telefon",
+"Autó",
+"Hűtőszekrény",
+"Iskola",
+"Repülőgép",
+"Gitár",
+"Krokodil",
+"Tükör",
+"Kerékpár",
+"Porszívó",
+"Napernyő",
+"Kulcs",
+"Óra",
+"Asztal",
+"Szék",
+"Lámpa",
+"Ajtó",
+"Ablak",
+"Hajszárító",
+"Televízió",
+"Laptop",
+"Fülhallgató",
+"Kamera",
+"Esőkabát",
+"Kalap",
+"Szemüveg",
+"Cipő",
+"Hátizsák",
+"Bőrönd",
+"Esernyő",
+"Könyv",
+"Ceruza",
+"Toll",
+"Füzet",
+"Labda",
+"Dob",
+"Zongora",
+"Mikrofon",
+"Kenyérpirító",
+"Kávéfőző",
+"Mosógép",
+"Vasaló",
+"Ventilátor",
+"Létra",
+"Kalapács",
+"Csavarhúzó",
+"Seprű",
+"Vödör",
+"Gyertya",
+"Gyufa",
+"Torta",
+"Ajándék",
+"Lufi",
+"Roller",
+"Gördeszka",
+"Hinta",
+"Sátor",
+"Hálózsák",
+"Iránytű",
+"Távcső",
+"Biciklis sisak",
+"Úszógumi",
+"Strandlabda",
+"Törölköző",
+"Fogkefe",
+"Fogkrém",
+"Szappan",
+"Sampon",
+"Fésű",
+"Hóember",
+"Hógolyó",
+"Homokvár",
+"Kapu",
+"Kerítés",
+"Postaláda",
+"Lift",
+"Lépcső",
+"Buszmegálló",
+"Kút",
+"Szökőkút",
+"Szobor",
+"Festmény",
+"Zászló",
+"Korona",
+"Kard",
+"Pajzs",
+"Varázspálca",
+"Robot",
+"Űrhajó",
+"Rakéta",
+"Időgép",
+"Kincsesláda",
+"Kalózhajó",
+"Vulkán",
+"Dinoszaurusz",
+"Kastély",
+"Sárkány",
+"Unikornis",
+"Kalóz",
+"Űrlény"
+
+]
+
+};
+
+
+/* =====================================================
+   KATEGÓRIA IKONOK
+===================================================== */
+
+const ICONS = {
+
+    "Filmek": "🎬",
+
+    "Sorozatok": "📺",
+
+    "Focisták": "⚽",
+
+    "Hírességek": "⭐",
+
+    "Ételek": "🍕",
+
+    "Állatok": "🐶",
+
+    "Járművek": "🚗",
+
+    "Vegyes": "🎲"
+
+};
+
+
+/* =====================================================
+   JÁTÉK VÁLTOZÓK
+===================================================== */
+
+let currentCategory = "";
+
+let words = [];
+
+let currentIndex = 0;
+
+let score = 0;
+
+let timeLeft = 60;
+
+let timer = null;
+
+let locked = false;
+
+let lastAction = 0;
+
+let sensorEnabled = false;
+
+let lastBeta = null;
+
+
+/* =====================================================
+   KÉPERNYŐVÁLTÁS
+===================================================== */
+
+function showScreen(id) {
+
+    document
+        .querySelectorAll(".screen")
+        .forEach(screen => {
+
+            screen.classList.add(
+                "hidden"
+            );
+
+        });
+
+    document
+        .getElementById(id)
+        .classList.remove(
+            "hidden"
+        );
+}
+
+
+/* =====================================================
+   KATEGÓRIÁK
+===================================================== */
+
+function openCategories() {
+
+    createCategoryButtons();
+
+    showScreen(
+        "categories"
+    );
+}
+
+
+function createCategoryButtons() {
+
+    const container =
+        document.getElementById(
+            "categoryList"
+        );
+
+    container.innerHTML = "";
+
+    Object.keys(DATA)
+        .forEach(category => {
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+            button.className =
+                "category";
+
+            button.innerHTML = `
+
+                <span class="emoji">
+                    ${ICONS[category]}
+                </span>
+
+                ${category}
+
+                <small>
+                    ${DATA[category].length} elem
+                </small>
+
+            `;
+
+            button.onclick =
+                () => startGame(
+                    category
+                );
+
+            container.appendChild(
+                button
+            );
+
+        });
+}
+
+
+/* =====================================================
+   RANDOM KEVERÉS
+===================================================== */
+
+function shuffle(array) {
+
+    const result =
+        [...array];
+
+    for (
+        let i = result.length - 1;
+        i > 0;
+        i--
+    ) {
+
+        const j =
+            Math.floor(
+                Math.random() *
+                (i + 1)
+            );
+
+        [
+            result[i],
+            result[j]
+        ] =
+        [
+            result[j],
+            result[i]
+        ];
+
+    }
+
+    return result;
+}
+
+
+/* =====================================================
+   JÁTÉK INDÍTÁSA
+===================================================== */
+
+function startGame(category) {
+
+    currentCategory =
+        category;
+
+    /*
+       A kategória teljes
+       listáját összekeverjük.
+    */
+
+    words =
+        shuffle(
+            DATA[
+                currentCategory
+            ]
+        );
+
+    currentIndex = 0;
+
+    score = 0;
+
+    timeLeft = 60;
+
+    locked = false;
+
+    lastBeta = null;
+
+    document
+        .getElementById(
+            "score"
+        )
+        .textContent =
+        "Pont: 0";
+
+    document
+        .getElementById(
+            "timer"
+        )
+        .textContent =
+        "⏱ 60";
+
+    showScreen("game");
+
+    nextWord();
+
+    startTimer();
+
+    requestMotionPermission();
+
+}
+
+
+/* =====================================================
+   KÖVETKEZŐ SZÓ
+===================================================== */
+
+function nextWord() {
+
+    if (
+        currentIndex >=
+        words.length
+    ) {
+
+        /*
+           Ha elfogyott a lista,
+           teljesen újra keverjük.
+        */
+
+        words =
+            shuffle(
+                DATA[
+                    currentCategory
+                ]
+            );
+
+        currentIndex = 0;
+    }
+
+    document
+        .getElementById(
+            "word"
+        )
+        .textContent =
+        words[currentIndex];
+
+    currentIndex++;
+
+    locked = false;
+}
+
+
+/* =====================================================
+   IDŐZÍTŐ
+===================================================== */
+
+function startTimer() {
+
+    clearInterval(
+        timer
+    );
+
+    timer =
+        setInterval(
+            () => {
+
+                timeLeft--;
+
+                document
+                    .getElementById(
+                        "timer"
+                    )
+                    .textContent =
+                    "⏱ " +
+                    timeLeft;
+
+                if (
+                    timeLeft <= 0
+                ) {
+
+                    endGame();
+
+                }
+
+            },
+            1000
+        );
+}
+
+
+/* =====================================================
+   VÁLASZ
+===================================================== */
+
+function answer(correct) {
+
+    if (locked) {
+        return;
+    }
+
+    if (
+        Date.now() -
+        lastAction <
+        700
+    ) {
+        return;
+    }
+
+    locked = true;
+
+    lastAction =
+        Date.now();
+
+
+    if (correct) {
+
+        score++;
+
+        document
+            .getElementById(
+                "score"
+            )
+            .textContent =
+            "Pont: " +
+            score;
+
+        vibrate(
+            70
+        );
+
+    } else {
+
+        vibrate(
+            [40,40,40]
+        );
+
+    }
+
+
+    setTimeout(
+        nextWord,
+        180
+    );
+
+}
+
+
+/* =====================================================
+   REZGÉS
+===================================================== */
+
+function vibrate(pattern) {
+
+    if (
+        "vibrate" in navigator
+    ) {
+
+        try {
+
+            navigator.vibrate(
+                pattern
+            );
+
+        } catch(e) {}
+
+    }
+
+}
+
+
+/* =====================================================
+   MOZGÁSÉRZÉKELÉS
+===================================================== */
+
+async function requestMotionPermission() {
+
+    /*
+       iPhone Safari esetén
+       engedélykérés szükséges.
+    */
+
+    if (
+        typeof DeviceOrientationEvent !==
+        "undefined" &&
+        typeof DeviceOrientationEvent
+            .requestPermission ===
+            "function"
+    ) {
+
+        try {
+
+            const permission =
+                await DeviceOrientationEvent
+                    .requestPermission();
+
+            if (
+                permission ===
+                "granted"
+            ) {
+
+                enableMotion();
+
+            } else {
+
+                setSensorStatus(
+                    "Mozgásérzékelés: tiltva"
+                );
+
+            }
+
+        } catch(error) {
+
+            setSensorStatus(
+                "Mozgásérzékelés: nem elérhető"
+            );
+
+        }
+
+    } else {
+
+        enableMotion();
+
+    }
+
+}
+
+
+/* =====================================================
+   MOZGÁS BEKAPCSOLÁSA
+===================================================== */
+
+function enableMotion() {
+
+    if (
+        sensorEnabled
+    ) {
+        return;
+    }
+
+    window.addEventListener(
+        "deviceorientation",
+        handleOrientation,
+        true
+    );
+
+    sensorEnabled = true;
+
+    setSensorStatus(
+        "Mozgásérzékelés: aktív ✅"
+    );
+
+}
+
+
+/* =====================================================
+   DÖNTÉS FELDOLGOZÁSA
+===================================================== */
+
+function handleOrientation(event) {
+
+    if (
+        document
+            .getElementById("game")
+            .classList
+            .contains("hidden")
+    ) {
+
+        return;
+
+    }
+
+    if (locked) {
+        return;
+    }
+
+    /*
+       A beta érték azt jelzi,
+       mennyire van előre/hátra
+       döntve az iPhone.
+    */
+
+    const beta =
+        event.beta;
+
+    if (
+        typeof beta !==
+        "number"
+    ) {
+        return;
+    }
+
+
+    /*
+       Első mérésnél csak
+       elmentjük az értéket.
+    */
+
+    if (
+        lastBeta === null
+    ) {
+
+        lastBeta =
+            beta;
+
+        return;
+
+    }
+
+
+    const difference =
+        beta -
+        lastBeta;
+
+
+    /*
+       Ha jelentősen lefelé
+       döntöd -> HELYES.
+    */
+
+    if (
+        difference > 25
+    ) {
+
+        answer(true);
+
+        lastBeta =
+            beta;
+
+        return;
+
+    }
+
+
+    /*
+       Ha jelentősen felfelé
+       döntöd -> PASSZ.
+    */
+
+    if (
+        difference < -25
+    ) {
+
+        answer(false);
+
+        lastBeta =
+            beta;
+
+        return;
+
+    }
+
+
+    /*
+       Folyamatosan frissítjük
+       az alapértéket.
+    */
+
+    if (
+        Math.abs(difference) < 8
+    ) {
+
+        lastBeta =
+            beta;
+
+    }
+
+}
+
+
+/* =====================================================
+   SENSOR ÁLLAPOT
+===================================================== */
+
+function setSensorStatus(text) {
+
+    const element =
+        document.getElementById(
+            "sensorStatus"
+        );
+
+    if (element) {
+
+        element.textContent =
+            text;
+
+    }
+
+}
+
+
+/* =====================================================
+   JÁTÉK VÉGE
+===================================================== */
+
+function endGame() {
+
+    clearInterval(
+        timer
+    );
+
+    document
+        .getElementById(
+            "finalScore"
+        )
+        .textContent =
+        score;
+
+    showScreen(
+        "result"
+    );
+
+}
+
+
+/* =====================================================
+   INDULÁS
+===================================================== */
+
+createCategoryButtons();
+
+
+</script>
+
+</body>
+</html>
