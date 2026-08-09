@@ -1972,57 +1972,80 @@ function enableMotion() {
 ===================================================== */
 
 function handleOrientation(event) {
-
     // Csak játék közben működjön
-    if (
-        document.getElementById("game").classList.contains("hidden")
-    ) {
+    const game = document.getElementById("game");
+    if (!game || game.classList.contains("hidden")) {
         return;
     }
-
     if (locked) {
         return;
     }
-
-    const beta = event.beta;
-
-    if (typeof beta !== "number") {
+    /*
+        GAMMA = a telefon oldalirányú dőlése.
+        Most ezt használjuk:
+        ⬆️ FEL  = PASSZ
+        ⬇️ LE   = HELYES
+        Nem a beta értéket használjuk.
+    */
+    const gamma = event.gamma;
+    if (typeof gamma !== "number") {
         return;
     }
-
-
-    // ==========================================
-    // ALAPHELYZET MEGTANULÁSA
-    // ==========================================
-
-    if (baselineBeta === null) {
-
-        baselineSamples.push(beta);
-
-        if (
-            baselineSamples.length >=
-            BASELINE_SAMPLE_COUNT
-        ) {
-
-            const total =
-                baselineSamples.reduce(
-                    (sum, value) => sum + value,
-                    0
-                );
-
-            baselineBeta =
-                total / baselineSamples.length;
-
+    /*
+        iPhone-on a gamma általában
+        -90 és +90 fok között mozog.
+        Középen:
+        kb. 0 fok
+        Erősebb egyik irány:
+        pozitív
+        Másik irány:
+        negatív
+    */
+    const TRIGGER = 30;
+    const RETURN = 15;
+    /*
+        Ha már történt döntés,
+        először vissza kell hozni
+        a telefont középre.
+    */
+    if (motionState === "TRIGGERED") {
+        if (Math.abs(gamma) <= RETURN) {
             motionState = "CENTER";
-
             setSensorStatus(
-                "✅ Kész! Döntsd előre vagy hátra a telefont."
+                "✅ Középen — jöhet a következő!"
             );
         }
-
         return;
     }
-
+    /*
+        Kis mozgást nem veszünk figyelembe.
+    */
+    if (Math.abs(gamma) < TRIGGER) {
+        return;
+    }
+    /*
+        ⬇️ LE = HELYES
+    */
+    if (gamma > TRIGGER) {
+        motionState = "TRIGGERED";
+        setSensorStatus(
+            "⬇️ HELYES!"
+        );
+        answer(true);
+        return;
+    }
+    /*
+        ⬆️ FEL = PASSZ
+    */
+    if (gamma < -TRIGGER) {
+        motionState = "TRIGGERED";
+        setSensorStatus(
+            "⬆️ PASSZ!"
+        );
+        answer(false);
+        return;
+    }
+}
 
     // ==========================================
     // ELTÉRÉS AZ ALAPHELYZETTŐL
