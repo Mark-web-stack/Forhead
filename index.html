@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -1972,192 +1973,136 @@ function enableMotion() {
 ===================================================== */
 
 function handleOrientation(event) {
-    // Csak játék közben működjön
-    const game = document.getElementById("game");
-    if (!game || game.classList.contains("hidden")) {
+
+    if (
+        document
+            .getElementById("game")
+            .classList
+            .contains("hidden")
+    ) {
+
         return;
+
     }
+
     if (locked) {
         return;
     }
-    /*
-        GAMMA = a telefon oldalirányú dőlése.
-        Most ezt használjuk:
-        ⬆️ FEL  = PASSZ
-        ⬇️ LE   = HELYES
-        Nem a beta értéket használjuk.
-    */
-    const gamma = event.gamma;
-    if (typeof gamma !== "number") {
-        return;
-    }
-    /*
-        iPhone-on a gamma általában
-        -90 és +90 fok között mozog.
-        Középen:
-        kb. 0 fok
-        Erősebb egyik irány:
-        pozitív
-        Másik irány:
-        negatív
-    */
-    const TRIGGER = 30;
-    const RETURN = 15;
-    /*
-        Ha már történt döntés,
-        először vissza kell hozni
-        a telefont középre.
-    */
-    if (motionState === "TRIGGERED") {
-        if (Math.abs(gamma) <= RETURN) {
-            motionState = "CENTER";
-            setSensorStatus(
-                "✅ Középen — jöhet a következő!"
-            );
-        }
-        return;
-    }
-    /*
-        Kis mozgást nem veszünk figyelembe.
-    */
-    if (Math.abs(gamma) < TRIGGER) {
-        return;
-    }
-    /*
-        ⬇️ LE = HELYES
-    */
-    if (gamma > TRIGGER) {
-        motionState = "TRIGGERED";
-        setSensorStatus(
-            "⬇️ HELYES!"
-        );
-        answer(true);
-        return;
-    }
-    /*
-        ⬆️ FEL = PASSZ
-    */
-    if (gamma < -TRIGGER) {
-        motionState = "TRIGGERED";
-        setSensorStatus(
-            "⬆️ PASSZ!"
-        );
-        answer(false);
-        return;
-    }
-}
-
-    // ==========================================
-    // ELTÉRÉS AZ ALAPHELYZETTŐL
-    // ==========================================
-
-    let difference =
-        beta - baselineBeta;
-
 
     /*
-        Ha az iPhone másik irányban adja
-        az értékeket, az előző/hátsó irány
-        automatikusan a megfelelő ághoz kerül.
+       A beta érték azt jelzi,
+       mennyire van előre/hátra
+       döntve az iPhone.
     */
 
-
-    // ==========================================
-    // MÁR TÖRTÉNT EGY DÖNTÉS
-    // ==========================================
+    const beta =
+        event.beta;
 
     if (
-        motionState === "TRIGGERED"
-    ) {
-
-        /*
-            Új döntést csak akkor engedünk,
-            ha a telefon visszatért középre.
-        */
-
-        if (
-            Math.abs(difference) <=
-            RETURN_ANGLE
-        ) {
-
-            motionState = "CENTER";
-
-            setSensorStatus(
-                "✅ Középen — jöhet a következő!"
-            );
-        }
-
-        return;
-    }
-
-
-    // ==========================================
-    // KÖZÉPHELYZET
-    // ==========================================
-
-    if (
-        motionState !== "CENTER"
+        typeof beta !==
+        "number"
     ) {
         return;
     }
 
 
     /*
-        A kis mozgásokat figyelmen kívül hagyjuk.
-        Ez megakadályozza a véletlen pontozást.
+       Első mérésnél csak
+       elmentjük az értéket.
     */
 
     if (
-        Math.abs(difference) <
-        CENTER_TOLERANCE
+        lastBeta === null
     ) {
+
+        lastBeta =
+            beta;
+
         return;
+
     }
 
 
-    // ==========================================
-    // ELŐRE DÖNTÉS
-    // ==========================================
+    const difference =
+        beta -
+        lastBeta;
+
+
+    /*
+       Ha jelentősen lefelé
+       döntöd -> HELYES.
+    */
 
     if (
-        difference >
-        TRIGGER_ANGLE
+        difference > 25
     ) {
-
-        motionState =
-            "TRIGGERED";
-
-        setSensorStatus(
-            "⬇️ HELYES!"
-        );
 
         answer(true);
 
+        lastBeta =
+            beta;
+
         return;
+
     }
 
 
-    // ==========================================
-    // HÁTRA DÖNTÉS
-    // ==========================================
+    /*
+       Ha jelentősen felfelé
+       döntöd -> PASSZ.
+    */
 
     if (
-        difference <
-        -TRIGGER_ANGLE
+        difference < -25
     ) {
-
-        motionState =
-            "TRIGGERED";
-
-        setSensorStatus(
-            "⬆️ PASSZ!"
-        );
 
         answer(false);
 
+        lastBeta =
+            beta;
+
         return;
+
     }
+
+
+    /*
+       Folyamatosan frissítjük
+       az alapértéket.
+    */
+
+    if (
+        Math.abs(difference) < 8
+    ) {
+
+        lastBeta =
+            beta;
+
+    }
+
 }
+
+
+/* =====================================================
+   SENSOR ÁLLAPOT
+===================================================== */
+
+function setSensorStatus(text) {
+
+    const element =
+        document.getElementById(
+            "sensorStatus"
+        );
+
+    if (element) {
+
+        element.textContent =
+            text;
+
+    }
+
+}
+
 
 /* =====================================================
    JÁTÉK VÉGE
