@@ -1971,71 +1971,170 @@ function enableMotion() {
    DÖNTÉS FELDOLGOZÁSA
 ===================================================== */
 
-function handleOrientation(event){
-    if(document.getElementById("game").classList.contains("hidden") || locked){
+function handleOrientation(event) {
+
+    // Csak játék közben működjön
+    if (
+        document.getElementById("game").classList.contains("hidden")
+    ) {
+        return;
+    }
+
+    if (locked) {
         return;
     }
 
     const beta = event.beta;
 
-    if(typeof beta !== "number"){
+    if (typeof beta !== "number") {
         return;
     }
 
-    // Ha még nincs előző értékünk, elmentjük
-    if(lastBeta === null){
-        lastBeta = beta;
+
+    // ==========================================
+    // ALAPHELYZET MEGTANULÁSA
+    // ==========================================
+
+    if (baselineBeta === null) {
+
+        baselineSamples.push(beta);
+
+        if (
+            baselineSamples.length >=
+            BASELINE_SAMPLE_COUNT
+        ) {
+
+            const total =
+                baselineSamples.reduce(
+                    (sum, value) => sum + value,
+                    0
+                );
+
+            baselineBeta =
+                total / baselineSamples.length;
+
+            motionState = "CENTER";
+
+            setSensorStatus(
+                "✅ Kész! Döntsd előre vagy hátra a telefont."
+            );
+        }
+
         return;
     }
 
-    const change = beta - lastBeta;
+
+    // ==========================================
+    // ELTÉRÉS AZ ALAPHELYZETTŐL
+    // ==========================================
+
+    let difference =
+        beta - baselineBeta;
+
 
     /*
-      TELEFON DÖNTÉSE:
-
-      Erős lefelé döntés -> HELYES
-      Erős felfelé döntés -> PASSZ
-
-      A küszöböt 15 fokra csökkentettük,
-      így könnyebben felismeri a mozdulatot.
+        Ha az iPhone másik irányban adja
+        az értékeket, az előző/hátsó irány
+        automatikusan a megfelelő ághoz kerül.
     */
 
-    if(change > 15){
-        lastBeta = beta;
-        answer(true);
+
+    // ==========================================
+    // MÁR TÖRTÉNT EGY DÖNTÉS
+    // ==========================================
+
+    if (
+        motionState === "TRIGGERED"
+    ) {
+
+        /*
+            Új döntést csak akkor engedünk,
+            ha a telefon visszatért középre.
+        */
+
+        if (
+            Math.abs(difference) <=
+            RETURN_ANGLE
+        ) {
+
+            motionState = "CENTER";
+
+            setSensorStatus(
+                "✅ Középen — jöhet a következő!"
+            );
+        }
+
         return;
     }
 
-    if(change < -15){
-        lastBeta = beta;
-        answer(false);
+
+    // ==========================================
+    // KÖZÉPHELYZET
+    // ==========================================
+
+    if (
+        motionState !== "CENTER"
+    ) {
         return;
     }
 
-    // Folyamatosan frissítjük az alaphelyzetet
-    lastBeta = beta;
-}
 
-/* =====================================================
-   SENSOR ÁLLAPOT
-===================================================== */
+    /*
+        A kis mozgásokat figyelmen kívül hagyjuk.
+        Ez megakadályozza a véletlen pontozást.
+    */
 
-function setSensorStatus(text) {
+    if (
+        Math.abs(difference) <
+        CENTER_TOLERANCE
+    ) {
+        return;
+    }
 
-    const element =
-        document.getElementById(
-            "sensorStatus"
+
+    // ==========================================
+    // ELŐRE DÖNTÉS
+    // ==========================================
+
+    if (
+        difference >
+        TRIGGER_ANGLE
+    ) {
+
+        motionState =
+            "TRIGGERED";
+
+        setSensorStatus(
+            "⬇️ HELYES!"
         );
 
-    if (element) {
+        answer(true);
 
-        element.textContent =
-            text;
-
+        return;
     }
 
-}
 
+    // ==========================================
+    // HÁTRA DÖNTÉS
+    // ==========================================
+
+    if (
+        difference <
+        -TRIGGER_ANGLE
+    ) {
+
+        motionState =
+            "TRIGGERED";
+
+        setSensorStatus(
+            "⬆️ PASSZ!"
+        );
+
+        answer(false);
+
+        return;
+    }
+}
 
 /* =====================================================
    JÁTÉK VÉGE
